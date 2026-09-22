@@ -1,11 +1,14 @@
 package com.aliahmet.pms.common.exception;
 
+import com.aliahmet.pms.exception.ApiErrorResponse;
+import com.aliahmet.pms.exception.ValidationErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,10 +16,11 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationErrors(
+    public ResponseEntity<ValidationErrorResponse> handleValidationErrors(
             MethodArgumentNotValidException exception
     ) {
-        Map<String, String> errors = new LinkedHashMap<>();
+
+        Map<String, String> errors = new HashMap<>();
 
         exception.getBindingResult()
                 .getFieldErrors()
@@ -28,36 +32,40 @@ public class GlobalExceptionHandler {
                 );
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(errors);
+                .badRequest()
+                .body(new ValidationErrorResponse(errors));
     }
 
     @ExceptionHandler(InvalidTestOrderStateException.class)
-    public ResponseEntity<Map<String, String>> handleInvalidTestOrderState(
+    public ResponseEntity<ApiErrorResponse> handleInvalidTestOrderState(
             InvalidTestOrderStateException exception
     ) {
-        Map<String, String> errorResponse = Map.of(
-                "error", "Test order state conflict",
-                "message", exception.getMessage()
-        );
+
+        ApiErrorResponse response =
+                new ApiErrorResponse(
+                        "Test order state conflict",
+                        exception.getMessage()
+                );
 
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(errorResponse);
+                .body(response);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleResourceNotFound(
+    public ResponseEntity<ApiErrorResponse> handleResourceNotFound(
             ResourceNotFoundException exception
     ) {
-        Map<String, String> errorResponse = Map.of(
-                "error", "Resource not found",
-                "message", exception.getMessage()
-        );
+
+        ApiErrorResponse response =
+                new ApiErrorResponse(
+                        "Resource not found",
+                        exception.getMessage()
+                );
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(errorResponse);
+                .body(response);
     }
 
 

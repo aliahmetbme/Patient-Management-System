@@ -1,5 +1,6 @@
 package com.aliahmet.pms.patient;
 
+import com.aliahmet.pms.common.exception.ResourceNotFoundException;
 import com.aliahmet.pms.patient.admission.AdmissionResult;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +49,11 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Optional<Patient> getPatientById(Long id) {
-        return patientRepository.findById(id);
-    }
+    public Patient getPatientById(Long patientId) {
 
+        return patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Patient not found: " + patientId
+                ));
+    }
 }

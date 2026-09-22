@@ -1,6 +1,5 @@
-package com.aliahmet.pms.testorder.command;
+package com.aliahmet.pms.testorder;
 
-import com.aliahmet.pms.testorder.TestType;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;

@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import com.aliahmet.pms.testorder.dto.TestOrderResponse;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aliahmet.pms.testorder.command.TestCommandInvoker;
-
 import com.aliahmet.pms.testorder.event.TestOrderStatusChangedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -136,7 +134,7 @@ public class TestOrderService {
     @Transactional(readOnly = true)
     public TestOrderResponse getTestOrderById (Long testOrderId) {
 
-        TestOrder testOrder = testOrderRepository.findById(testOrderId).orElseThrow(() -> new IllegalArgumentException(
+        TestOrder testOrder = testOrderRepository.findById(testOrderId).orElseThrow(() -> new ResourceNotFoundException(
                 "Test order not found: " + testOrderId
         ));
 

@@ -1,14 +1,14 @@
-package com.aliahmet.pms.testorder.command;
+package com.aliahmet.pms.testorder;
 
 import com.aliahmet.pms.department.LaboratoryDepartment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CardiologyBloodTestCommand implements TestCommand {
+public class EndocrinologyBloodTestCommand implements TestCommand {
 
     private final LaboratoryDepartment laboratoryDepartment;
 
-    public CardiologyBloodTestCommand(
+    public EndocrinologyBloodTestCommand(
             LaboratoryDepartment laboratoryDepartment
     ) {
         this.laboratoryDepartment = laboratoryDepartment;
@@ -16,6 +16,6 @@ public class CardiologyBloodTestCommand implements TestCommand {
 
     @Override
     public String execute() {
-        return laboratoryDepartment.performCardiologyBloodTest();
+        return laboratoryDepartment.performEndocrinologyBloodTest();
     }
 }
